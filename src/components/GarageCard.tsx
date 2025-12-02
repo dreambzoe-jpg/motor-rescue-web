@@ -7,8 +7,7 @@ interface Garage {
   images?: string[];
   brand_specialty?: string[];
   description: string;
-  latitude: number;
-  longitude: number;
+  maps_url: string;
   phone: string;
 }
 
@@ -31,7 +30,7 @@ export default function GarageCard({ garage }: GarageCardProps) {
 
       <button
         className="btn"
-        onClick={() => openInGoogleMaps(garage.latitude, garage.longitude)}
+        onClick={() => window.open(garage.maps_url, "_blank")}
       >
         Open in Google Maps
       </button>

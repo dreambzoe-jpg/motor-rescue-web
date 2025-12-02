@@ -7,8 +7,7 @@ interface Garage {
   description: string;
   brand_specialty?: string[];
   phone: string;
-  latitude: number;
-  longitude: number;
+  maps_url: string;
 }
 
 interface GarageProfileProps {
@@ -32,7 +31,7 @@ export default function GarageProfile({ garage }: GarageProfileProps) {
 
       <button
         className="btn-primary"
-        onClick={() => openInGoogleMaps(garage.latitude, garage.longitude)}
+        onClick={() => window.open(garage.maps_url, "_blank")}
       >
         Get Directions (Google Maps)
       </button>

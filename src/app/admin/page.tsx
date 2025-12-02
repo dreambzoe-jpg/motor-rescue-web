@@ -9,8 +9,7 @@ export default function AdminPage() {
     location: '',
     description: '',
     phone: '',
-    latitude: '',
-    longitude: '',
+    maps_url: '',
     brand_specialty: '',
     images: '',
     is_verified: false,
@@ -21,8 +20,6 @@ export default function AdminPage() {
     e.preventDefault()
     const garageData = {
       ...formData,
-      latitude: parseFloat(formData.latitude),
-      longitude: parseFloat(formData.longitude),
       brand_specialty: formData.brand_specialty.split(',').map(s => s.trim()),
       images: formData.images.split(',').map(s => s.trim())
     }
@@ -37,8 +34,7 @@ export default function AdminPage() {
         location: '',
         description: '',
         phone: '',
-        latitude: '',
-        longitude: '',
+        maps_url: '',
         brand_specialty: '',
         images: '',
         is_verified: false,
@@ -108,31 +104,17 @@ export default function AdminPage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Latitude</label>
-            <input
-              type="number"
-              step="any"
-              name="latitude"
-              value={formData.latitude}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Longitude</label>
-            <input
-              type="number"
-              step="any"
-              name="longitude"
-              value={formData.longitude}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Google Maps Link</label>
+          <input
+            type="url"
+            name="maps_url"
+            value={formData.maps_url || ''}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            placeholder="https://maps.google.com/?q=..."
+            required
+          />
         </div>
 
         <div>

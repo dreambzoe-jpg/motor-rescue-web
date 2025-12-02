@@ -19,8 +19,7 @@ const GaragePage: React.FC<PageProps> = ({ params }) => {
     description: 'A great garage for your car needs.',
     is_verified: true,
     emergency_services: true,
-    latitude: -3.745,
-    longitude: -38.523
+    maps_url: 'https://maps.google.com/?q=-3.745,-38.523'
   }
 
   // Mock reviews data
@@ -48,7 +47,7 @@ const GaragePage: React.FC<PageProps> = ({ params }) => {
       {garage.emergency_services && (
         <button
           className="btn-emergency"
-          onClick={() => openInGoogleMaps(garage.latitude, garage.longitude)}
+          onClick={() => window.open(garage.maps_url, "_blank")}
         >
           Emergency: Navigate Immediately
         </button>
