@@ -11,17 +11,45 @@ export default function AdminPage() {
     phone: '',
     maps_url: '',
     brand_specialty: '',
-    images: '',
+    imageFile: null as File | null,
     is_verified: false,
     emergency_services: false
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    let imageUrl = '/placeholder.jpg'
+
+    if (formData.imageFile) {
+      const fileExt = formData.imageFile.name.split('.').pop()
+      const fileName = `${Date.now()}.${fileExt}`
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('garage-images')
+        .upload(fileName, formData.imageFile)
+
+      if (uploadError) {
+        alert('Error uploading image: ' + uploadError.message)
+        return
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('garage-images')
+        .getPublicUrl(fileName)
+
+      imageUrl = urlData.publicUrl
+    }
+
     const garageData = {
-      ...formData,
-      brand_specialty: formData.brand_specialty.split(',').map(s => s.trim()),
-      images: formData.images.split(',').map(s => s.trim())
+      name: formData.name,
+      location: formData.location,
+      description: formData.description,
+      phone: formData.phone,
+      maps_url: formData.maps_url,
+      brand_specialty: formData.brand_specialty.split(',').map((s: string) => s.trim()),
+      images: [imageUrl],
+      is_verified: formData.is_verified,
+      emergency_services: formData.emergency_services
     }
 
     const { error } = await supabase.from('garages').insert(garageData)
@@ -36,7 +64,7 @@ export default function AdminPage() {
         phone: '',
         maps_url: '',
         brand_specialty: '',
-        images: '',
+        imageFile: null,
         is_verified: false,
         emergency_services: false
       })
@@ -130,14 +158,12 @@ export default function AdminPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Images (comma separated URLs)</label>
+          <label className="block text-sm font-medium mb-1">Garage Image</label>
           <input
-            type="text"
-            name="images"
-            value={formData.images}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFormData(prev => ({ ...prev, imageFile: e.target.files?.[0] || null }))}
             className="w-full p-2 border rounded"
-            placeholder="/image1.jpg, /image2.jpg"
           />
         </div>
 
